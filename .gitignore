@@ -1,6 +1,6 @@
 # ignore all .o generated after compilation
 *.o
 
-# ignore test files generated
+# ignore test generated files
 check_input
 check_ouput
