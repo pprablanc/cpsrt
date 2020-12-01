@@ -1,17 +1,19 @@
+// External libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
-#include "portaudio.h"
+#include "../include/portaudio.h"
 
+// Internal libraries
 #ifndef H_INIT
 #define H_INIT
-  #include "init.h"
+  #include "../include/init.h"
 #endif
-#include "global.h"
-#include "pitch_shifting.h"
+#include "../include/global.h"
+#include "../include/pitch_shifting.h"
 
 
 /* @todo Underflow and overflow is disabled until we fix priming of blocking write. */
@@ -26,8 +28,7 @@
 #define CLEAR(a) memset( (a), 0, FRAMES_PER_INPUT_BUFFER * NUM_CHANNELS * SAMPLE_SIZE )
 #define PRINTF_S_FORMAT "%.8f"
 
-
-
+#define RESOURCE_PATH "resources/"
 
 /*******************************************************************/
 
@@ -48,7 +49,7 @@ int main(void){
 
 
     
-    printf("\npitch_shifting.c\n"); fflush(stdout);
+    printf("Starting pitch shifting program ...\n"); fflush(stdout);
 
     /*--------------- INITIALISATION DES VARIABLES ---------------------*/ 
 
@@ -63,34 +64,26 @@ int main(void){
     data_input_process->input_buffer = (float *) malloc( CINQ_TRAME*numBytes);
     data_input_process->trame_modifie_precedente = (float *) malloc(CINQ_TRAME*UNE_TRAME*sizeof(float));
 
-
-
-    if( sampleBlock == NULL ){
-        printf("Impossible d'allouer une des variables\n");
-        exit(1);
-    }
-
-    if(load_window_data((char*)"init_files/hanning_G",hanning_G) == 0){
+    if(load_window_data((char*)RESOURCE_PATH"hanning_G", hanning_G) == 0){
       fprintf(stdout,"initialisation de la variable hanning_G : OK\n");
     }else{
       fprintf(stderr,"initialisation de la variable hanning_G : erreur\n");
     }
-
-    if(load_window_data((char*)"init_files/hanning_D",hanning_D) == 0){
+    if(load_window_data((char*)RESOURCE_PATH"hanning_D", hanning_D) == 0){
       fprintf(stdout,"initialisation de la variable hanning_D : OK\n");
     }else{
       fprintf(stderr,"initialisation de la variable hanning_D : erreur\n");
     }
-    if(load_window_data((char*)"init_files/pond",pond) == 0){
+    if(load_window_data((char*)RESOURCE_PATH"pond", pond) == 0){
       fprintf(stdout,"initialisation de la variable pond : OK\n");
     }else{
       fprintf(stderr,"initialisation de la variable pond : erreur\n");
     }
 
     int nbrFiles;
-    nbrFiles = get_nbr_files((char*)"./init_files/banque_filtre/");
+    nbrFiles = get_nbr_files((char*)RESOURCE_PATH"banque_filtre/");
     filter_bank = (FILTER *) malloc(nbrFiles*sizeof(FILTER));
-    if(load_filter_bank((char*)"./init_files/banque_filtre/",filter_bank) == 0){
+    if(load_filter_bank((char*)RESOURCE_PATH"banque_filtre/", filter_bank) == 0){
       fprintf(stdout,"initialisation de la variable filter_bank : OK\n");
     }else{
       fprintf(stderr,"initialisation de la variable filter_bank : erreur\n");
@@ -118,6 +111,7 @@ int main(void){
     printf("pitchShiftCoef: %f\n",pitchShiftCoef);
     bankID = -1;
     for( i=0; i<nbrFiles ; i++){
+      printf("Filter bank pitch coefficient: %f", filter_bank[i].pitchShiftCoef);
       if(pitchShiftCoef == filter_bank[i].pitchShiftCoef){
         bankID = i;
         break;

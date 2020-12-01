@@ -1,4 +1,4 @@
-#include "init.h"
+#include "../include/init.h"
 
 int load_window_data(char * filename, float * pdata_init) {
 

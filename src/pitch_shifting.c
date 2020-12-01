@@ -1,5 +1,5 @@
-#include "pitch_shifting.h"
-#include "resample.h"
+#include "../include/pitch_shifting.h"
+#include "../include/resample.h"
 
 void pitch_shifting(  float pitchShiftCoef,   
                       DATA_INPUT_PROCESS * data_in, //structure de données entrantes et données sauvegardées du passage précédent

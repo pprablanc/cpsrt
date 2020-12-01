@@ -1,4 +1,4 @@
-#include "resample.h"
+#include "../include/resample.h"
 
 
 void resample( 	float * input,
