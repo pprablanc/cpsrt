@@ -12,7 +12,7 @@ This C code allows one to modify the pitch of the voice. It's an old code that w
 
 ## How to use
 
-Just launch the binary file "pitch_shifting_bin" in the commandline. If error occurs, try to set up your audio output configuration.
+Just launch the binary file "pitch_shifting" in the commandline. If error occurs, try to set up your audio output configuration.
 
 
 ## Building from source
